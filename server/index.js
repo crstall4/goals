@@ -19,7 +19,7 @@ app.use('/api/goals', goalRoutes);
 // Serve the built frontend in production
 if (existsSync(distDir)) {
   app.use(express.static(distDir));
-  app.get('*', (_req, res) => res.sendFile(join(distDir, 'index.html')));
+  app.use((_req, res) => res.sendFile(join(distDir, 'index.html')));
 }
 
 // Midnight — backfill daily goals for yesterday
