@@ -199,3 +199,37 @@
   font-weight: 500;
   color: var(--text-muted);
 }
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0.75rem 1rem;
+  }
+
+  .main {
+    padding: 1rem 0.75rem;
+  }
+
+  .row {
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .rowDate {
+    font-size: 0.8rem;
+  }
+
+  .rowGoals {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .badge {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.85rem;
+  }
+
+  .streakRow {
+    padding: 0.75rem 1rem;
+  }
+}

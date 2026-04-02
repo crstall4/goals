@@ -104,3 +104,9 @@
 .switchBtn:hover {
   color: var(--primary-hover);
 }
+
+@media (max-width: 480px) {
+  .card {
+    padding: 2rem 1.25rem;
+  }
+}

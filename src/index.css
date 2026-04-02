@@ -21,10 +21,19 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
 }
 
 button {
   cursor: pointer;
   border: none;
   font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+}
+
+input {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
