@@ -1,14 +1,26 @@
 import express from 'express';
 import cron from 'node-cron';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { existsSync } from 'fs';
 import db from './db.js';
 import authRoutes from './routes/auth.js';
 import goalRoutes from './routes/goals.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const distDir = join(__dirname, '../dist');
 
 const app = express();
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/goals', goalRoutes);
+
+// Serve the built frontend in production
+if (existsSync(distDir)) {
+  app.use(express.static(distDir));
+  app.get('*', (_req, res) => res.sendFile(join(distDir, 'index.html')));
+}
 
 // Midnight — backfill daily goals for yesterday
 cron.schedule('0 0 * * *', () => {
