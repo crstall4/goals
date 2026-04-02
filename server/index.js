@@ -54,5 +54,5 @@ cron.schedule('59 23 * * 6', () => {
   console.log(`[cron] Archived ${weeklyGoals.length} weekly goals for week ending ${date}`);
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3101;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
