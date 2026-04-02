@@ -1,0 +1,85 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  user-select: none;
+}
+
+.item:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 12px rgba(79, 70, 229, 0.08);
+}
+
+.item.checked {
+  border-color: var(--success);
+  background: #f0fdf9;
+}
+
+.icon {
+  font-size: 1.5rem;
+  width: 2rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.label {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Hide real checkbox, use custom box */
+.checkbox {
+  display: none;
+}
+
+.box {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+  position: relative;
+}
+
+.checked .box {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.freqBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: #ededfd;
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  flex-shrink: 0;
+}
+
+.checked .freqBadge {
+  color: var(--success);
+  background: #d1fae5;
+}
+
+.checked .box::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 6px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}

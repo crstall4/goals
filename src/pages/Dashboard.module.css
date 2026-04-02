@@ -1,0 +1,255 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userEmail {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.historyBtn {
+  font-size: 0.875rem;
+  padding: 0.4rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--primary);
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.historyBtn:hover {
+  border-color: var(--primary);
+  background: #ededfd;
+}
+
+.loadingText {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem 0;
+}
+
+.logoutBtn {
+  font-size: 0.875rem;
+  padding: 0.4rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.logoutBtn:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.main {
+  flex: 1;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.progressText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.progressBar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--success);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.goalList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.manageRow {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.manageRow > label {
+  flex: 1;
+  min-width: 0;
+}
+
+.deleteBtn {
+  flex-shrink: 0;
+  width: 2.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #ef4444;
+  font-size: 0.875rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.deleteBtn:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.manageBtn {
+  font-size: 0.875rem;
+  padding: 0.4rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.manageBtn:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.manageBtnActive {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.addForm {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.addFormTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.addRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.addInput {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.addInput:focus {
+  border-color: var(--primary);
+}
+
+.addIcon {
+  width: 3.5rem;
+  text-align: center;
+}
+
+.addLabel {
+  flex: 1;
+  min-width: 120px;
+}
+
+.freqToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.addBtn {
+  padding: 0.55rem 1.1rem;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.addBtn:hover {
+  background: var(--primary-hover);
+}
+
+.addError {
+  font-size: 0.8rem;
+  color: #ef4444;
+}
+
+.allDone {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--success);
+  padding: 1rem;
+}
