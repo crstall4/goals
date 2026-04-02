@@ -1,15 +1,11 @@
 const BASE = '/api';
 
-function getToken() {
-  return localStorage.getItem('token');
-}
-
 async function request(method, path, body) {
   const res = await fetch(`${BASE}${path}`, {
     method,
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
     },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
   });
@@ -21,6 +17,8 @@ async function request(method, path, body) {
 export const api = {
   login:      (username, password) => request('POST', '/auth/login',    { username, password }),
   register:   (username, password) => request('POST', '/auth/register', { username, password }),
+  me:         ()                   => request('GET',  '/auth/me'),
+  logout:     ()                   => request('POST', '/auth/logout'),
 
   getGoals:    ()                          => request('GET',    '/goals'),
   createGoal:  (label, icon, frequency)    => request('POST',   '/goals', { label, icon, frequency }),

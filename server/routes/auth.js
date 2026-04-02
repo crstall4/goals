@@ -1,9 +1,17 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import db, { seedDefaultGoals } from '../db.js';
-import { signToken } from '../middleware/auth.js';
+import { signToken, requireAuth } from '../middleware/auth.js';
 
 const router = Router();
+
+const COOKIE_OPTS = {
+  httpOnly: true,
+  sameSite: 'lax',
+  maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  path: '/',
+  secure: process.env.NODE_ENV === 'production',
+};
 
 router.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -23,7 +31,7 @@ router.post('/register', async (req, res) => {
     ).run(username, hash);
     seedDefaultGoals(result.lastInsertRowid);
     const token = signToken({ id: result.lastInsertRowid, username });
-    res.json({ token, username });
+    res.cookie('token', token, COOKIE_OPTS).json({ username });
   } catch (err) {
     if (err.message.includes('UNIQUE')) {
       return res.status(409).json({ error: 'Username already taken' });
@@ -46,7 +54,15 @@ router.post('/login', async (req, res) => {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
   const token = signToken({ id: user.id, username: user.username });
-  res.json({ token, username: user.username });
+  res.cookie('token', token, COOKIE_OPTS).json({ username: user.username });
+});
+
+router.get('/me', requireAuth, (req, res) => {
+  res.json({ username: req.user.username });
+});
+
+router.post('/logout', (_req, res) => {
+  res.clearCookie('token', { path: '/' }).json({ ok: true });
 });
 
 export default router;

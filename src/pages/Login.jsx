@@ -17,7 +17,6 @@ export default function Login({ onLogin }) {
       const data = mode === 'login'
         ? await api.login(username, password)
         : await api.register(username, password);
-      localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username);
       onLogin({ username: data.username });
     } catch (err) {

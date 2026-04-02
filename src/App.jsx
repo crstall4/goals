@@ -1,30 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Stats from './pages/Stats';
-
-function getUserFromStorage() {
-  const token = localStorage.getItem('token');
-  const username = localStorage.getItem('username');
-  if (token && username) return { username };
-  return null;
-}
+import { api } from './api';
 
 export default function App() {
-  const [user, setUser] = useState(getUserFromStorage);
-  const [page, setPage] = useState('dashboard'); // 'dashboard' | 'stats'
+  const [user, setUser] = useState(null);
+  const [checking, setChecking] = useState(true);
+  const [page, setPage] = useState('dashboard');
+
+  useEffect(() => {
+    api.me()
+      .then(data => setUser(data))
+      .catch(() => {})
+      .finally(() => setChecking(false));
+  }, []);
 
   function handleLogin(userData) {
     setUser(userData);
     setPage('dashboard');
   }
 
-  function handleLogout() {
-    localStorage.removeItem('token');
+  async function handleLogout() {
+    await api.logout().catch(() => {});
     localStorage.removeItem('username');
     setUser(null);
     setPage('dashboard');
   }
+
+  if (checking) return null;
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
