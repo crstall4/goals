@@ -22,8 +22,8 @@ if (existsSync(distDir)) {
   app.use((_req, res) => res.sendFile(join(distDir, 'index.html')));
 }
 
-// Midnight — backfill daily goals for yesterday
-cron.schedule('0 0 * * *', () => {
+// 3:30 AM MST (10:30 AM UTC) — backfill daily goals for the just-completed day
+cron.schedule('30 10 * * *', () => {
   const d = new Date();
   d.setDate(d.getDate() - 1);
   const date = d.toISOString().slice(0, 10);

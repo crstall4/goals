@@ -5,7 +5,10 @@ import { requireAuth } from '../middleware/auth.js';
 const router = Router();
 
 function todayDate() {
-  return new Date().toISOString().slice(0, 10);
+  // Day resets at 3:30 AM MST (UTC-7), so subtract 10.5 hours from UTC
+  // before taking the date — keeps the "current day" consistent with the cron.
+  const d = new Date(Date.now() - 10.5 * 60 * 60 * 1000);
+  return d.toISOString().slice(0, 10);
 }
 
 function currentWeekSaturday() {
