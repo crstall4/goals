@@ -127,22 +127,27 @@ export default function Dashboard() {
             <form className="add-card" onSubmit={addGoal}>
               <h3>Add a goal</h3>
               <div className="add-row">
-                <input
-                  className="emoji-input"
-                  value={icon}
-                  onChange={(e) => setIcon(e.target.value)}
-                  placeholder="🎯"
-                  maxLength={4}
-                  aria-label="Emoji icon"
-                  title="Pick an emoji"
-                />
-                <input
-                  className="label-input"
-                  value={label}
-                  onChange={(e) => setLabel(e.target.value)}
-                  placeholder="e.g. Morning run"
-                  aria-label="Goal name"
-                />
+                <div className="add-field add-field--icon">
+                  <span className="add-field-label">Icon</span>
+                  <input
+                    className="emoji-input"
+                    value={icon}
+                    onChange={(e) => setIcon(e.target.value)}
+                    placeholder="🎯"
+                    maxLength={4}
+                    aria-label="Emoji icon"
+                  />
+                </div>
+                <div className="add-field add-field--name">
+                  <span className="add-field-label">Goal name</span>
+                  <input
+                    className="label-input"
+                    value={label}
+                    onChange={(e) => setLabel(e.target.value)}
+                    placeholder="e.g. Morning run"
+                    aria-label="Goal name"
+                  />
+                </div>
               </div>
               <div className="freq-toggle">
                 <label className={frequency === "daily" ? "active" : ""}>
