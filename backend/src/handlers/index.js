@@ -104,7 +104,7 @@ export async function getStats(ctx) {
 // Misses are inferred (we only store completions), and each goal only appears
 // for periods on/after it was created.
 export async function getHistory(ctx) {
-  const goals = await db.listGoals(ctx.userId);
+  const goals = await db.listAllGoals(ctx.userId);
   const completed = await completedSet(ctx.userId);
 
   const dailyGoals = goals.filter((g) => g.frequency === "daily");
@@ -118,7 +118,7 @@ export async function getHistory(ctx) {
   for (let i = 1; i <= HISTORY_DAYS; i++) {
     const date = shiftDate(today, -i);
     const entries = dailyGoals
-      .filter((g) => date >= dailyStart(g.createdAt))
+      .filter((g) => date >= dailyStart(g.createdAt) && (!g.deletedAt || date < deletedDate(g.deletedAt)))
       .map((g) => goalEntry(g, completed.has(key(date, g.goalId))));
     if (entries.length) daily.push({ date, goals: entries });
   }
@@ -128,7 +128,7 @@ export async function getHistory(ctx) {
   for (let i = 1; i <= HISTORY_WEEKS; i++) {
     const weekEnding = shiftDate(thisSat, -7 * i);
     const entries = weeklyGoals
-      .filter((g) => weekEnding >= weeklyStart(g.createdAt))
+      .filter((g) => weekEnding >= weeklyStart(g.createdAt) && (!g.deletedAt || weekEnding < deletedDate(g.deletedAt)))
       .map((g) => goalEntry(g, completed.has(key(weekEnding, g.goalId))));
     if (entries.length) weekly.push({ weekEnding, goals: entries });
   }
@@ -154,6 +154,12 @@ function goalEntry(g, completed) {
 // The daily-period date a goal was created in (same 3:30 AM MST offset).
 function dailyStart(createdAt) {
   const d = new Date((createdAt || 0) - 10.5 * 60 * 60 * 1000);
+  return d.toISOString().slice(0, 10);
+}
+
+// The daily-period date a goal was deleted in (same 3:30 AM MST offset).
+function deletedDate(deletedAt) {
+  const d = new Date(deletedAt - 10.5 * 60 * 60 * 1000);
   return d.toISOString().slice(0, 10);
 }
 

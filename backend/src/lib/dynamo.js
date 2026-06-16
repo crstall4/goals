@@ -18,7 +18,7 @@ import {
   QueryCommand,
   PutCommand,
   DeleteCommand,
-  BatchWriteCommand,
+  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { randomUUID } from "node:crypto";
 
@@ -34,6 +34,18 @@ const compSk = (date, goalId) => `COMP#${date}#${goalId}`;
 // ----- Goals --------------------------------------------------------------
 
 export async function listGoals(userId) {
+  const res = await ddb.send(new QueryCommand({
+    TableName: TABLE,
+    KeyConditionExpression: "PK = :pk AND begins_with(SK, :prefix)",
+    ExpressionAttributeValues: { ":pk": pk(userId), ":prefix": "GOAL#" },
+  }));
+  return (res.Items || [])
+    .filter((it) => !it.deleted)
+    .map(stripKeys)
+    .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+}
+
+export async function listAllGoals(userId) {
   const res = await ddb.send(new QueryCommand({
     TableName: TABLE,
     KeyConditionExpression: "PK = :pk AND begins_with(SK, :prefix)",
@@ -60,17 +72,14 @@ export async function createGoal(userId, { label, icon, frequency }) {
   return stripKeys(item);
 }
 
-// Delete a goal AND every completion record tied to it.
+// Soft-delete a goal by marking it deleted (preserves completion history).
 export async function deleteGoal(userId, goalId) {
-  await ddb.send(new DeleteCommand({
+  await ddb.send(new UpdateCommand({
     TableName: TABLE,
     Key: { PK: pk(userId), SK: goalSk(goalId) },
+    UpdateExpression: "SET deleted = :d, deletedAt = :t",
+    ExpressionAttributeValues: { ":d": true, ":t": Date.now() },
   }));
-  const comps = await listCompletions(userId);
-  const orphans = comps
-    .filter((c) => c.goalId === goalId)
-    .map((c) => ({ DeleteRequest: { Key: { PK: pk(userId), SK: compSk(c.date, c.goalId) } } }));
-  await batchWriteChunked(orphans);
 }
 
 // ----- Completions --------------------------------------------------------
@@ -128,16 +137,4 @@ export async function seedDefaultGoals(userId) {
 function stripKeys(row) {
   const { PK, SK, ...rest } = row;
   return rest;
-}
-
-// DynamoDB BatchWrite caps at 25 items per call. Chunk and send in parallel.
-async function batchWriteChunked(requests) {
-  if (!requests.length) return;
-  const chunks = [];
-  for (let i = 0; i < requests.length; i += 25) {
-    chunks.push(requests.slice(i, i + 25));
-  }
-  for (const chunk of chunks) {
-    await ddb.send(new BatchWriteCommand({ RequestItems: { [TABLE]: chunk } }));
-  }
 }
