@@ -33,11 +33,7 @@ export default function App() {
       />
       <Route
         path="/stats"
-        element={
-          <RequireAuth>
-            <Stats />
-          </RequireAuth>
-        }
+        element={<Stats />}
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
