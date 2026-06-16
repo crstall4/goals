@@ -133,13 +133,14 @@ export default function Dashboard() {
                   onChange={(e) => setIcon(e.target.value)}
                   placeholder="🎯"
                   maxLength={4}
-                  aria-label="Emoji"
+                  aria-label="Emoji icon"
+                  title="Pick an emoji"
                 />
                 <input
                   className="label-input"
                   value={label}
                   onChange={(e) => setLabel(e.target.value)}
-                  placeholder="Goal name"
+                  placeholder="e.g. Morning run"
                   aria-label="Goal name"
                 />
               </div>
