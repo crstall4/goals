@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { api } from "../lib/api.js";
 
 // ─── Toggle this to preview without auth ──────────────────────────────────────
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 // ─── Mock data generator ──────────────────────────────────────────────────────
 function seededRand(seed) {
